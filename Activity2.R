@@ -255,8 +255,21 @@ h1Daily <- hist(datW$PRCP[datW$siteN == 1],
 
 #Question 8
 
+MorrisvilleSum <- datW$PRCP[datW$year[datW$NAME == "MORRISVILLE 6 SW, NY US"]]
+MorrisvilleSum
+sum(MorrisvilleSum, na.rm = TRUE)
 
+LivermoreSum <- datW$PRCP[datW$NAME == "LIVERMORE, CA US"]
+sum(LivermoreSum, na.rm = TRUE)
 
+AberdeenSum <- datW$PRCP[datW$NAME == "ABERDEEN, WA US"]
+sum(AberdeenSum, na.rm = TRUE)
+
+MormonFlatSum <- datW$PRCP[datW$NAME == "MORMON FLAT, AZ US"]
+sum(MormonFlatSum, na.rm = TRUE)
+
+MandanSum <- datW$PRCP[datW$NAME == "MANDAN EXPERIMENT STATION, ND US"]
+sum(MandanSum, na.rm = TRUE)
 
 
 #Question 9
