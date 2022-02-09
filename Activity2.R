@@ -26,10 +26,10 @@ setwd("Z:\\students\\bweber\\Data\\Activity2Files")
 getwd()
 
 # In class PC File Path
-datW <- read.csv("Z:\\students\\bweber\\Data\\Activity2Files\\2011124.csv", stringsAsFactors = T)
+#datW <- read.csv("Z:\\students\\bweber\\Data\\Activity2Files\\2011124.csv", stringsAsFactors = T)
 
 # Home PC File Path
-#datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity2Files\\2011124.csv", stringsAsFactors = T)
+datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity2Files\\2011124.csv", stringsAsFactors = T)
 str(datW)
 
 #Question 1
