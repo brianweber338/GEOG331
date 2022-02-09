@@ -254,22 +254,19 @@ h1Daily <- hist(datW$PRCP[datW$siteN == 1],
            border="white")
 
 #Question 8
+par(mfrow=c(1,1))
+AnnualPRCP <- aggregate(datW$PRCP, by=list(datW$year, datW$siteN), FUN = "sum", na.rm=TRUE)
 
-MorrisvilleSum <- datW$PRCP[datW$year[datW$NAME == "MORRISVILLE 6 SW, NY US"]]
-MorrisvilleSum
-sum(MorrisvilleSum, na.rm = TRUE)
-
-LivermoreSum <- datW$PRCP[datW$NAME == "LIVERMORE, CA US"]
-sum(LivermoreSum, na.rm = TRUE)
-
-AberdeenSum <- datW$PRCP[datW$NAME == "ABERDEEN, WA US"]
-sum(AberdeenSum, na.rm = TRUE)
-
-MormonFlatSum <- datW$PRCP[datW$NAME == "MORMON FLAT, AZ US"]
-sum(MormonFlatSum, na.rm = TRUE)
-
-MandanSum <- datW$PRCP[datW$NAME == "MANDAN EXPERIMENT STATION, ND US"]
-sum(MandanSum, na.rm = TRUE)
+MorrisvilleAnnual <- hist(AnnualPRCP$x[AnnualPRCP$Group.2 == 1],
+                freq=FALSE, 
+                main = "Morrisville Annual Precipitation",
+                xlab = "Precipitation in mm", 
+                ylab="Relative frequency",
+                col="midnightblue",
+                border="white")
 
 
 #Question 9
+
+TotalMean <- aggregate(AnnualPRCP$x, by=list(AnnualPRCP$Group.2), FUN="mean",na.rm=TRUE)
+TotalMean
