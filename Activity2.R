@@ -13,7 +13,11 @@ print(heights_cm)
 
 #set up a matrix with 2 columns and fill in by rows
 #first argument is the vector of numbers to fill in the matrix
-Mat<-matrix(c(1,2,3,4,5,6), ncol=2, byrow=TRUE)
+Mat.bycol<-matrix(c(1,2,3,4,5,6), ncol=2, byrow=TRUE)
+Mat.bycol
+
+Mat.bycol[1,]
+Mat.bycol[,2]
 
 
 #HW START
@@ -22,10 +26,10 @@ setwd("Z:\\students\\bweber\\Data\\Activity2Files")
 getwd()
 
 # In class PC File Path
-#datW <- read.csv("Z:\\students\\bweber\\Data\\Activity2Files\\2011124.csv", stringsAsFactors = T)
+datW <- read.csv("Z:\\students\\bweber\\Data\\Activity2Files\\2011124.csv", stringsAsFactors = T)
 
 # Home PC File Path
-datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity2Files\\2011124.csv", stringsAsFactors = T)
+#datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity2Files\\2011124.csv", stringsAsFactors = T)
 str(datW)
 
 #Question 1
@@ -267,6 +271,5 @@ MorrisvilleAnnual <- hist(AnnualPRCP$x[AnnualPRCP$Group.2 == 1],
 
 
 #Question 9
-
 TotalMean <- aggregate(AnnualPRCP$x, by=list(AnnualPRCP$Group.2), FUN="mean",na.rm=TRUE)
 TotalMean
