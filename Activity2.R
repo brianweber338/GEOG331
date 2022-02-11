@@ -13,7 +13,11 @@ print(heights_cm)
 
 #set up a matrix with 2 columns and fill in by rows
 #first argument is the vector of numbers to fill in the matrix
-Mat<-matrix(c(1,2,3,4,5,6), ncol=2, byrow=TRUE)
+Mat.bycol<-matrix(c(1,2,3,4,5,6), ncol=2, byrow=TRUE)
+Mat.bycol
+
+Mat.bycol[1,]
+Mat.bycol[,2]
 
 
 #HW START
@@ -267,6 +271,5 @@ MorrisvilleAnnual <- hist(AnnualPRCP$x[AnnualPRCP$Group.2 == 4],
 
 
 #Question 9
-
 TotalMean <- aggregate(AnnualPRCP$x, by=list(AnnualPRCP$Group.2), FUN="mean",na.rm=TRUE)
 TotalMean
