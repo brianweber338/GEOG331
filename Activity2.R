@@ -257,7 +257,7 @@ h1Daily <- hist(datW$PRCP[datW$siteN == 1],
 par(mfrow=c(1,1))
 AnnualPRCP <- aggregate(datW$PRCP, by=list(datW$year, datW$siteN), FUN = "sum", na.rm=TRUE)
 
-MorrisvilleAnnual <- hist(AnnualPRCP$x[AnnualPRCP$Group.2 == 5],
+MorrisvilleAnnual <- hist(AnnualPRCP$x[AnnualPRCP$Group.2 == 4],
                 freq=FALSE, 
                 main = "Mormon Flat Annual Precipitation",
                 xlab = "Precipitation in mm", 
