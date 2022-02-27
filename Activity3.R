@@ -27,19 +27,22 @@ assert(length(a) == length(b), "error: unequal length")
 #specify the the NA is designated differently
 
 #In class path
-datW <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
-                 na.strings=c("#N/A"), skip=3, header=FALSE)
+#datW <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
+                 #na.strings=c("#N/A"), skip=3, header=FALSE)
 
 #Laptop path
-#datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
-#                 na.strings=c("#N/A"), skip=3, header=FALSE)
+datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
+                na.strings=c("#N/A"), skip=3, header=FALSE)
 #preview data
 print(datW[1,])
 
 #get sensor info from file
 # this data table will contain all relevant units
-sensorInfo <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
-                         na.strings=c("#N/A"), nrows=2)
+#sensorInfo <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
+                        # na.strings=c("#N/A"), nrows=2)
+
+sensorInfo <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
+                       na.strings=c("#N/A"), nrows=2)
 
 print(sensorInfo)
 
@@ -131,7 +134,7 @@ points(datW$DD[lightscale > 0], lightscale[lightscale > 0],
        col= "tomato3", pch=19)
 
 
-#Assert that preciptationVector and lightscale are the same length
+#Assert that preciptationVector and lightscale are the same length (ie. modified equally)
 precipitationVector <- c(datW$precipitation)
 assert(length(precipitationVector) == length(lightscale), "error: They are not equal sizes")
 
@@ -152,6 +155,9 @@ datW$air.tempQ2 <- ifelse(datW$precipitation  >= 2 & datW$lightning.acvitivy >0,
 datW$wind.speedQ1 <- ifelse(datW$precipitation  >= 2 & datW$lightning.acvitivy >0, NA,
                             ifelse(datW$precipitation > 5, NA, datW$wind.speed))
 
+#Assert that if wind.speedQ1 and air tempQ2 have been modified equally
+assert(length(datW$wind.speedQ1) == datW$air.tempQ2, "error: They are not equal sizes")
+
 #make the plot with Wind Speed marked
 plot(datW$DD , datW$wind.speedQ1, xlab = "Day of Year", ylab = "Wind Speed",
      type="n")
@@ -168,7 +174,24 @@ lines(datW$DD[datW$wind.speedQ1 > 0], datW$wind.speedQ1[datW$wind.speedQ1 > 0],
 #### Question 6 End ####
 
 #### Question 7 ####
+#generate plots for Soil Moisture, Soil Temperature, Precipitation, and Air Temperature
+par(mfrow=c(2,2))
 
+#Plot Soil Moisture
+plot(datW$DD, datW$soil.moisture, pch = 19, type="b", xlim = c(163,192),
+     xlab = "Day of Year", ylab = "Soil Moisture")
+
+#Plot Soil Temp
+plot(datW$DD, datW$soil.temp, pch = 19, type="b", xlim = c(163,192),
+     xlab = "Day of Year", ylab = "Soil Temperature (C°)")
+
+#Plot Precipitation
+plot(datW$DD, datW$precipitation, pch = 19, type="b", xlim = c(163,192),
+     xlab = "Day of Year", ylab = "Precipitation (mm)")
+
+#Plot Air Temperature
+plot(datW$DD, datW$air.temperature, pch = 19, type="b", xlim = c(163,192),
+     xlab = "Day of Year", ylab = "Air Temperature (C°)")
 
 
 #### Question 7 End ####
@@ -181,22 +204,22 @@ dataTab <- table(datW$DD, df$column_variable)
 #### Question 8 End ####
 
 #### Question 9 ####
-#Creates plot with Air Temperature marked
-plot(datW$DD , datW$air.temperature, xlab = "Day of Year", ylab = "Air Temperature",
-     type="n")
+#generate plots for Soil Moisture, Soil Temperature, Precipitation, and Air Temperature
+par(mfrow=c(2,2))
 
-#plot Air Temperature points
-#make the points semi-transparent
-points(datW$DD[datW$air.temperature > 0], datW$air.temperature,
-       col= rgb(95/255,158/255,160/255,.5), pch=15)
+#Plot Soil Moisture
+plot(datW$DD, datW$soil.moisture, pch = 19, type="b", xlim = c(163,192),
+     xlab = "Day of Year", ylab = "Soil Moisture")
 
+#Plot Soil Temp
+plot(datW$DD, datW$soil.temp, pch = 19, type="b", xlim = c(163,192),
+     xlab = "Day of Year", ylab = "Soil Temperature (C°)")
 
-#Creates plot with Precipitation marked
-plot(datW$DD , datW$precipitation, xlab = "Day of Year", ylab = "Precipitation",
-     type="n")
+#Plot Precipitation
+plot(datW$DD, datW$precipitation, pch = 19, type="b", xlim = c(163,192),
+     xlab = "Day of Year", ylab = "Precipitation (mm)")
 
-#plot Air Temperature points
-#make the points semi-transparent
-points(datW$DD[datW$precipitation > 0], datW$precipitation[datW$precipitation > 0],
-       col= rgb(95/255,158/255,160/255,.5), pch=15)
+#Plot Air Temperature
+plot(datW$DD, datW$air.temperature, pch = 19, type="b", xlim = c(163,192),
+     xlab = "Day of Year", ylab = "Air Temperature (C°)")
 
