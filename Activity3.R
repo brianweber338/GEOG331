@@ -1,3 +1,4 @@
+#### NonQuestionWork ####
 #create a function. The names of the arguments for your function will be in parentheses. Everything in curly brackets will be run each time the function is run.
 assert <- function(statement,err.message){
   #if evaluates if a statement is true or false for a single item
@@ -17,25 +18,185 @@ a <- c(1,2,3,4)
 b <- c(8,4,5)
 assert(length(a) == length(b), "error: unequal length")
 
+#### End ####
 
+#### Question 3 ####
 
 #read in the data file
 #skip the first 3 rows since there is additional column info
 #specify the the NA is designated differently
 
 #In class path
-#datW <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
+datW <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
                  na.strings=c("#N/A"), skip=3, header=FALSE)
 
 #Laptop path
-datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
-                 na.strings=c("#N/A"), skip=3, header=FALSE)
+#datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
+#                 na.strings=c("#N/A"), skip=3, header=FALSE)
 #preview data
 print(datW[1,])
 
 #get sensor info from file
 # this data table will contain all relevant units
-sensorInfo <-   read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
+sensorInfo <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
                          na.strings=c("#N/A"), nrows=2)
 
 print(sensorInfo)
+
+#get column names from sensorInfo table
+# and set weather station colnames  to be the same
+colnames(datW) <-   colnames(sensorInfo)
+#preview data
+print(datW[1,])
+
+#### Question 3 End ####
+
+#### Question 4 ####
+
+#use install.packages to install lubridate
+#install.packages(c("lubridate"))
+#it is helpful to comment this line after you run this line of code on the computer
+#and the package installs. You really don't want to do this over and over again.
+
+library(lubridate)
+#convert to standardized format
+#date format is m/d/y
+dates <- mdy_hm(datW$timestamp, tz= "America/New_York")
+
+
+#calculate day of year
+datW$doy <- yday(dates)
+#calculate hour in the day
+datW$hour <- hour(dates) + (minute(dates)/60)
+#calculate decimal day of year
+datW$DD <- datW$doy + (datW$hour/24)
+#quick preview of new date calculations
+datW[1,]
+
+#see how many values have missing data for each sensor observation
+#air temperature
+length(which(is.na(datW$air.temperature)))
+
+#wind speed
+length(which(is.na(datW$wind.speed)))
+
+#precipitation
+length(which(is.na(datW$precipitation)))
+
+#soil temperature
+length(which(is.na(datW$soil.moisture)))
+
+#soil moisture
+length(which(is.na(datW$soil.temp)))
+
+#make a plot with filled in points (using pch)
+#line lines
+plot(datW$DD, datW$soil.moisture, pch=19, type="b", xlab = "Day of Year",
+     ylab="Soil moisture (cm3 water per cm3 soil)")
+
+#make a plot with filled in points (using pch)
+#line lines
+plot(datW$DD, datW$air.temperature, pch=19, type="b", xlab = "Day of Year",
+     ylab="Air temperature (degrees C)")
+
+datW$air.tempQ1 <- ifelse(datW$air.temperature < 0, NA, datW$air.temperature)
+
+#check the values at the extreme range of the data
+#and throughout the percentiles
+quantile(datW$air.tempQ1)
+
+#look at days with really low air temperature
+datW[datW$air.tempQ1 < 8,]  
+
+#look at days with really high air temperature
+datW[datW$air.tempQ1 > 33,]  
+
+#### Question 4 End ####
+
+#### Question 5 ####
+#plot precipitation and lightning strikes on the same plot
+#normalize lighting strikes to match precipitation
+lightscale <- (max(datW$precipitation)/max(datW$lightning.acvitivy)) * datW$lightning.acvitivy
+#make the plot with precipitation and lightning activity marked
+#make it empty to start and add in features
+plot(datW$DD , datW$precipitation, xlab = "Day of Year", ylab = "Precipitation & lightning",
+     type="n")
+#plot precipitation points only when there is precipitation 
+#make the points semi-transparent
+points(datW$DD[datW$precipitation > 0], datW$precipitation[datW$precipitation > 0],
+       col= rgb(95/255,158/255,160/255,.5), pch=15)        
+
+#plot lightning points only when there is lightning     
+points(datW$DD[lightscale > 0], lightscale[lightscale > 0],
+       col= "tomato3", pch=19)
+
+
+#Assert that preciptationVector and lightscale are the same length
+precipitationVector <- c(datW$precipitation)
+assert(length(precipitationVector) == length(lightscale), "error: They are not equal sizes")
+
+#assert(!is.null(datW$DD[lightscale > 0]), "error: They are not equal sizes")
+
+#### Question 5 End ####
+
+#### Question 6 ####
+#filter out storms in wind and air temperature measurements
+# filter all values with lightning that coincides with rainfall greater than 2mm or only rainfall over 5 mm.    
+#create a new air temp column
+datW$air.tempQ2 <- ifelse(datW$precipitation  >= 2 & datW$lightning.acvitivy >0, NA,
+                          ifelse(datW$precipitation > 5, NA, datW$air.tempQ1))
+
+#filter out suspect wind speed measurements
+#filter all values with lightning that coincides with rainfall greater than 2mm or only rainfall over 5 mm.
+#create a new wind speed column
+datW$wind.speedQ1 <- ifelse(datW$precipitation  >= 2 & datW$lightning.acvitivy >0, NA,
+                            ifelse(datW$precipitation > 5, NA, datW$wind.speed))
+
+#make the plot with Wind Speed marked
+plot(datW$DD , datW$wind.speedQ1, xlab = "Day of Year", ylab = "Wind Speed",
+     type="n")
+
+#plot wind speed points only when there is wind speed 
+#make the points semi-transparent
+points(datW$DD[datW$wind.speedQ1 > 0], datW$wind.speedQ1[datW$wind.speedQ1 > 0],
+       col= rgb(95/255,158/255,160/255,.5), pch=15) 
+
+#plot line based on wind speed points
+lines(datW$DD[datW$wind.speedQ1 > 0], datW$wind.speedQ1[datW$wind.speedQ1 > 0],
+      col= "chocolate1", pch=15)
+
+#### Question 6 End ####
+
+#### Question 7 ####
+
+
+
+#### Question 7 End ####
+
+#### Question 8 ####
+avgAirTemp <- sum(datW$air.temperature)/length(datW$air.temperature)
+dataTab <- table(datW$DD, df$column_variable)
+
+
+#### Question 8 End ####
+
+#### Question 9 ####
+#Creates plot with Air Temperature marked
+plot(datW$DD , datW$air.temperature, xlab = "Day of Year", ylab = "Air Temperature",
+     type="n")
+
+#plot Air Temperature points
+#make the points semi-transparent
+points(datW$DD[datW$air.temperature > 0], datW$air.temperature,
+       col= rgb(95/255,158/255,160/255,.5), pch=15)
+
+
+#Creates plot with Precipitation marked
+plot(datW$DD , datW$precipitation, xlab = "Day of Year", ylab = "Precipitation",
+     type="n")
+
+#plot Air Temperature points
+#make the points semi-transparent
+points(datW$DD[datW$precipitation > 0], datW$precipitation[datW$precipitation > 0],
+       col= rgb(95/255,158/255,160/255,.5), pch=15)
+
