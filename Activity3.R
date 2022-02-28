@@ -216,7 +216,7 @@ observationTable$DDTimePeriod <- max(datW$DD, na.rm = TRUE)
 
 observationTable
 
-
+#3 measurements for time
 #### Question 8 End ####
 
 #### Question 9 ####
@@ -225,7 +225,7 @@ par(mfrow=c(2,2))
 
 #Plot Soil Moisture
 plot(datW$DD, datW$soil.moisture, pch = 19, type="b",
-     xlab = "Day of Year", ylab = "Soil Moisture")
+     xlab = "Day of Year", ylab = "Soil Moisture (cm3 water per cm3 soil)")
 
 #Plot Soil Temp
 plot(datW$DD, datW$soil.temp, pch = 19, type="b",
