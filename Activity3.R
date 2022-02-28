@@ -156,7 +156,7 @@ datW$wind.speedQ1 <- ifelse(datW$precipitation  >= 2 & datW$lightning.acvitivy >
                             ifelse(datW$precipitation > 5, NA, datW$wind.speed))
 
 #Assert that if wind.speedQ1 and air tempQ2 have been modified equally
-assert(length(datW$wind.speedQ1) == datW$air.tempQ2, "error: They are not equal sizes")
+assert(length(datW$wind.speedQ1) == length(datW$air.tempQ2), "error: They are not equal sizes")
 
 #make the plot with Wind Speed marked
 plot(datW$DD , datW$wind.speedQ1, xlab = "Day of Year", ylab = "Wind Speed",
