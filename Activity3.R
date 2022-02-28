@@ -224,18 +224,18 @@ observationTable
 par(mfrow=c(2,2))
 
 #Plot Soil Moisture
-plot(datW$DD, datW$soil.moisture, pch = 19, type="b", xlim = c(163,192),
+plot(datW$DD, datW$soil.moisture, pch = 19, type="b",
      xlab = "Day of Year", ylab = "Soil Moisture")
 
 #Plot Soil Temp
-plot(datW$DD, datW$soil.temp, pch = 19, type="b", xlim = c(163,192),
+plot(datW$DD, datW$soil.temp, pch = 19, type="b",
      xlab = "Day of Year", ylab = "Soil Temperature (C°)")
 
 #Plot Precipitation
-plot(datW$DD, datW$precipitation, pch = 19, type="b", xlim = c(163,192),
+plot(datW$DD, datW$precipitation, pch = 19, type="b",
      xlab = "Day of Year", ylab = "Precipitation (mm)")
 
 #Plot Air Temperature
-plot(datW$DD, datW$air.temperature, pch = 19, type="b", xlim = c(163,192),
+plot(datW$DD, datW$air.temperature, pch = 19, type="b",
      xlab = "Day of Year", ylab = "Air Temperature (C°)")
 
