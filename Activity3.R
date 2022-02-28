@@ -177,19 +177,19 @@ lines(datW$DD[datW$wind.speedQ1 > 0], datW$wind.speedQ1[datW$wind.speedQ1 > 0],
 #generate plots for Soil Moisture, Soil Temperature, Precipitation, and Air Temperature
 par(mfrow=c(2,2))
 
-#Plot Soil Moisture
+#Plot Soil Moisture prior to soil data loss on Day 192
 plot(datW$DD, datW$soil.moisture, pch = 19, type="b", xlim = c(163,192),
      xlab = "Day of Year", ylab = "Soil Moisture")
 
-#Plot Soil Temp
+#Plot Soil Temp prior to soil data loss on Day 192
 plot(datW$DD, datW$soil.temp, pch = 19, type="b", xlim = c(163,192),
      xlab = "Day of Year", ylab = "Soil Temperature (C°)")
 
-#Plot Precipitation
+#Plot Precipitation prior to soil data loss on Day 192
 plot(datW$DD, datW$precipitation, pch = 19, type="b", xlim = c(163,192),
      xlab = "Day of Year", ylab = "Precipitation (mm)")
 
-#Plot Air Temperature
+#Plot Air Temperature prior to soil data loss on Day 192
 plot(datW$DD, datW$air.temperature, pch = 19, type="b", xlim = c(163,192),
      xlab = "Day of Year", ylab = "Air Temperature (C°)")
 
@@ -197,8 +197,24 @@ plot(datW$DD, datW$air.temperature, pch = 19, type="b", xlim = c(163,192),
 #### Question 7 End ####
 
 #### Question 8 ####
-avgAirTemp <- sum(datW$air.temperature)/length(datW$air.temperature)
-dataTab <- table(datW$DD, df$column_variable)
+# Create observation table with total precipitation
+# This data table will store other requested averages
+observationTable <- data.frame("Total Precipitation" = round(sum(datW$precipitation, na.rm = TRUE), digits = 3))
+
+# Add avgAirTemp to the data table
+observationTable$avgAirTemp <- mean(datW$air.temperature, na.rm = TRUE)
+# Add avgWindSpeed to the data table
+observationTable$avgWindSpeed <- round(mean(datW$wind.speed, na.rm = TRUE), digits = 2)
+# Add avgWindSpeed to the data table
+observationTable$avgSoilMoisture <- round(mean(datW$soil.moisture, na.rm = TRUE), digits =  4)
+# Add avgSoilMoisture to the data table
+observationTable$avgSoilTemp <- round(mean(datW$soil.temp, na.rm = TRUE), digits = 1)
+# Add Total Number of observations to the data table
+observationTable$NumObservations <- length(datW$solar.radiation)
+# Add time period of measurement to the data table
+observationTable$DDTimePeriod <- max(datW$DD, na.rm = TRUE)
+
+observationTable
 
 
 #### Question 8 End ####
