@@ -7,16 +7,6 @@ assert <- function(statement,err.message){
   }
 }
 
-#check how the statement works
-#evaluate a false statement
-assert(1 == 2, "error: unequal values")
-
-#evaluate a true statement
-assert(2 == 2, "error: unequal values")
-#set up assert to check if two vectors are the same length
-a <- c(1,2,3,4)
-b <- c(8,4,5)
-assert(length(a) == length(b), "error: unequal length")
 
 #### End ####
 
@@ -38,9 +28,11 @@ print(datW[1,])
 
 #get sensor info from file
 # this data table will contain all relevant units
+#In class path
 #sensorInfo <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
                         # na.strings=c("#N/A"), nrows=2)
 
+# Laptop path
 sensorInfo <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
                        na.strings=c("#N/A"), nrows=2)
 
