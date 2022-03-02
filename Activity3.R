@@ -1,4 +1,4 @@
-#### NonQuestionWork ####
+#### NonQuestionCode ####
 #create a function. The names of the arguments for your function will be in parentheses. Everything in curly brackets will be run each time the function is run.
 assert <- function(statement,err.message){
   #if evaluates if a statement is true or false for a single item
@@ -15,7 +15,6 @@ assert <- function(statement,err.message){
 #read in the data file
 #skip the first 3 rows since there is additional column info
 #specify the the NA is designated differently
-
 #In class path
 #datW <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
                  #na.strings=c("#N/A"), skip=3, header=FALSE)
@@ -23,8 +22,6 @@ assert <- function(statement,err.message){
 #Laptop path
 datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
                 na.strings=c("#N/A"), skip=3, header=FALSE)
-#preview data
-print(datW[1,])
 
 #get sensor info from file
 # this data table will contain all relevant units
@@ -36,13 +33,11 @@ print(datW[1,])
 sensorInfo <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
                        na.strings=c("#N/A"), nrows=2)
 
-print(sensorInfo)
 
 #get column names from sensorInfo table
 # and set weather station colnames  to be the same
 colnames(datW) <-   colnames(sensorInfo)
-#preview data
-print(datW[1,])
+
 
 #### Question 3 End ####
 
@@ -50,8 +45,6 @@ print(datW[1,])
 
 #use install.packages to install lubridate
 #install.packages(c("lubridate"))
-#it is helpful to comment this line after you run this line of code on the computer
-#and the package installs. You really don't want to do this over and over again.
 
 library(lubridate)
 #convert to standardized format
@@ -65,8 +58,7 @@ datW$doy <- yday(dates)
 datW$hour <- hour(dates) + (minute(dates)/60)
 #calculate decimal day of year
 datW$DD <- datW$doy + (datW$hour/24)
-#quick preview of new date calculations
-datW[1,]
+
 
 #see how many values have missing data for each sensor observation
 #air temperature
@@ -84,12 +76,12 @@ length(which(is.na(datW$soil.moisture)))
 #soil moisture
 length(which(is.na(datW$soil.temp)))
 
-#make a plot with filled in points (using pch)
+#make a plot for soil moisture with filled in points (using pch)
 #line lines
 plot(datW$DD, datW$soil.moisture, pch=19, type="b", xlab = "Day of Year",
      ylab="Soil moisture (cm3 water per cm3 soil)")
 
-#make a plot with filled in points (using pch)
+#make a plot for air temperature with filled in points (using pch)
 #line lines
 plot(datW$DD, datW$air.temperature, pch=19, type="b", xlab = "Day of Year",
      ylab="Air temperature (degrees C)")
@@ -109,13 +101,15 @@ datW[datW$air.tempQ1 > 33,]
 #### Question 4 End ####
 
 #### Question 5 ####
+# Create lightscale based on precipitation and lightning activitity
+lightscale <- (max(datW$precipitation)/max(datW$lightning.acvitivy)) * datW$lightning.acvitivy
+
 #plot precipitation and lightning strikes on the same plot
 #normalize lighting strikes to match precipitation
-lightscale <- (max(datW$precipitation)/max(datW$lightning.acvitivy)) * datW$lightning.acvitivy
-#make the plot with precipitation and lightning activity marked
 #make it empty to start and add in features
 plot(datW$DD , datW$precipitation, xlab = "Day of Year", ylab = "Precipitation & lightning",
      type="n")
+
 #plot precipitation points only when there is precipitation 
 #make the points semi-transparent
 points(datW$DD[datW$precipitation > 0], datW$precipitation[datW$precipitation > 0],
@@ -126,11 +120,10 @@ points(datW$DD[lightscale > 0], lightscale[lightscale > 0],
        col= "tomato3", pch=19)
 
 
-#Assert that preciptationVector and lightscale are the same length (ie. modified equally)
-precipitationVector <- c(datW$precipitation)
-assert(length(precipitationVector) == length(lightscale), "error: They are not equal sizes")
+#Assert that datW$preciptation and lightscale are the same length (ie. modified equally)
+assert(length(datW$precipitation) == length(lightscale), "error: They are not equal sizes")
 
-#assert(!is.null(datW$DD[lightscale > 0]), "error: They are not equal sizes")
+
 
 #### Question 5 End ####
 
@@ -171,7 +164,7 @@ par(mfrow=c(2,2))
 
 #Plot Soil Moisture prior to soil data loss on Day 192
 plot(datW$DD, datW$soil.moisture, pch = 19, type="b", xlim = c(163,192),
-     xlab = "Day of Year", ylab = "Soil Moisture")
+     xlab = "Day of Year", ylab = "Soil Moisture (cm3 water per cm3 soil)")
 
 #Plot Soil Temp prior to soil data loss on Day 192
 plot(datW$DD, datW$soil.temp, pch = 19, type="b", xlim = c(163,192),
