@@ -15,21 +15,21 @@ assert <- function(statement,err.message){
 #skip the first 3 rows since there is additional column info
 #specify the the NA is designated differently
 #In class path
-#datW <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
+datW <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
                  #na.strings=c("#N/A"), skip=3, header=FALSE)
 
 #Laptop path
-datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
+#datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
                 na.strings=c("#N/A"), skip=3, header=FALSE)
 
 #get sensor info from file
 # this data table will contain all relevant units
 #In class path
-#sensorInfo <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
+sensorInfo <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
                         # na.strings=c("#N/A"), nrows=2)
 
 # Laptop path
-sensorInfo <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
+# sensorInfo <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
                        na.strings=c("#N/A"), nrows=2)
 
 
@@ -142,6 +142,19 @@ datW$wind.speedQ1 <- ifelse(datW$precipitation  >= 2 & datW$lightning.acvitivy >
 #Assert that if wind.speedQ1 and air tempQ2 have been modified equally
 assert(length(datW$wind.speedQ1) == length(datW$air.tempQ2), "error: They are not equal sizes")
 
+
+#Assert that wind.speedQ1 and air.tempq2 have an equal amount of NAs
+WindSpeedNA = is.na(datW$wind.speedQ1)
+AirTempNA = is.na(datW$air.tempQ2)
+
+for (i in 1:length(WindSpeedNA)){
+  if (WindSpeedNA[i] == TRUE){
+    assert(WindSpeedNA[i] == AirTempNA[i], "error: NAs do not match")
+  }
+  
+}
+  
+
 #make the plot with Wind Speed marked
 plot(datW$DD , datW$wind.speedQ1, xlab = "Day of Year", ylab = "Wind Speed",
      type="n")
@@ -200,8 +213,11 @@ observationTable$avgSoilTemp <- round(mean(datW$soil.temp, na.rm = TRUE), digits
 # Add Total Number of observations to the data table
 observationTable$NumObservations <- length(datW$solar.radiation)
 
-# Add time period of measurement to the data table
-observationTable$DDTimePeriod <- max(datW$DD, na.rm = TRUE)
+# Add time period of measurement start to the data table
+observationTable$DDTimePeriodBegin <- min(datW$DD, na.rm = TRUE)
+
+# Add time period of measurement end to the data table
+observationTable$DDTimePeriodBegin <- max(datW$DD, na.rm = TRUE)
 
 observationTable
 
