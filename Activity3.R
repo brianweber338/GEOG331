@@ -8,7 +8,6 @@ assert <- function(statement,err.message){
 }
 
 
-#### End ####
 
 #### Question 3 ####
 
@@ -39,7 +38,7 @@ sensorInfo <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity
 colnames(datW) <-   colnames(sensorInfo)
 
 
-#### Question 3 End ####
+
 
 #### Question 4 ####
 
@@ -98,7 +97,7 @@ datW[datW$air.tempQ1 < 8,]
 #look at days with really high air temperature
 datW[datW$air.tempQ1 > 33,]  
 
-#### Question 4 End ####
+
 
 #### Question 5 ####
 # Create lightscale based on precipitation and lightning activitity
@@ -125,7 +124,7 @@ assert(length(datW$precipitation) == length(lightscale), "error: They are not eq
 
 
 
-#### Question 5 End ####
+
 
 #### Question 6 ####
 #filter out storms in wind and air temperature measurements
@@ -156,7 +155,7 @@ points(datW$DD[datW$wind.speedQ1 > 0], datW$wind.speedQ1[datW$wind.speedQ1 > 0],
 lines(datW$DD[datW$wind.speedQ1 > 0], datW$wind.speedQ1[datW$wind.speedQ1 > 0],
       col= "chocolate1", pch=15)
 
-#### Question 6 End ####
+
 
 #### Question 7 ####
 #generate plots for Soil Moisture, Soil Temperature, Precipitation, and Air Temperature
@@ -179,7 +178,7 @@ plot(datW$DD, datW$air.temperature, pch = 19, type="b", xlim = c(163,192),
      xlab = "Day of Year", ylab = "Air Temperature (C°)")
 
 
-#### Question 7 End ####
+
 
 #### Question 8 ####
 # Create observation table with total precipitation
@@ -188,21 +187,26 @@ observationTable <- data.frame("Total Precipitation" = round(sum(datW$precipitat
 
 # Add avgAirTemp to the data table
 observationTable$avgAirTemp <- mean(datW$air.temperature, na.rm = TRUE)
+
 # Add avgWindSpeed to the data table
 observationTable$avgWindSpeed <- round(mean(datW$wind.speed, na.rm = TRUE), digits = 2)
+
 # Add avgWindSpeed to the data table
 observationTable$avgSoilMoisture <- round(mean(datW$soil.moisture, na.rm = TRUE), digits =  4)
+
 # Add avgSoilMoisture to the data table
 observationTable$avgSoilTemp <- round(mean(datW$soil.temp, na.rm = TRUE), digits = 1)
+
 # Add Total Number of observations to the data table
 observationTable$NumObservations <- length(datW$solar.radiation)
+
 # Add time period of measurement to the data table
 observationTable$DDTimePeriod <- max(datW$DD, na.rm = TRUE)
 
 observationTable
 
 #3 measurements for time
-#### Question 8 End ####
+
 
 #### Question 9 ####
 #generate plots for Soil Moisture, Soil Temperature, Precipitation, and Air Temperature
