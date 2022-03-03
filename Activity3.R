@@ -15,21 +15,21 @@ assert <- function(statement,err.message){
 #skip the first 3 rows since there is additional column info
 #specify the the NA is designated differently
 #In class path
-datW <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
+#datW <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
                  #na.strings=c("#N/A"), skip=3, header=FALSE)
 
 #Laptop path
-#datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
+datW <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
                 na.strings=c("#N/A"), skip=3, header=FALSE)
 
 #get sensor info from file
 # this data table will contain all relevant units
 #In class path
-sensorInfo <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
+#sensorInfo <- read.csv("Z:\\students\\bweber\\Data\\bewkes\\bewkes_weather.csv",
                         # na.strings=c("#N/A"), nrows=2)
 
 # Laptop path
-# sensorInfo <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
+sensorInfo <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity3Files\\bewkes\\bewkes_weather.csv",
                        na.strings=c("#N/A"), nrows=2)
 
 
@@ -213,15 +213,17 @@ observationTable$avgSoilTemp <- round(mean(datW$soil.temp, na.rm = TRUE), digits
 # Add Total Number of observations to the data table
 observationTable$NumObservations <- length(datW$solar.radiation)
 
-# Add time period of measurement start to the data table
+# Add time stamp of measurement start to the data table
 observationTable$DDTimePeriodBegin <- min(datW$DD, na.rm = TRUE)
 
-# Add time period of measurement end to the data table
-observationTable$DDTimePeriodBegin <- max(datW$DD, na.rm = TRUE)
+# Add time stamp of last soil moisture and temperature reading
+observationTable$DDTimePeriodLastSoilMeasurement <- datW$DD[1411]
+
+# Add time stamp of measurement end to the data table
+observationTable$DDTimePeriodEnd <- max(datW$DD, na.rm = TRUE)
 
 observationTable
 
-#3 measurements for time
 
 
 #### Question 9 ####
