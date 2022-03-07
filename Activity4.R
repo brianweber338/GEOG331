@@ -19,6 +19,21 @@ library(ggplot2)
 
 # hint: consider using a list, and also new vectors for regression variables
 
+final_list = list()
+
+flower <- iris[iris$Species=='versicolor',]
+
+list_data = list(flower$Sepal.Length, flower$Sepal.Width, flower$Petal.Length,
+                 flower$Petal.Width, flower$Sepal.Length, flower$Petal.Length)
+
+
+for (i in 1:3){
+  
+  DataSet1 = unlist(list_data[((i*2)-1)])
+  DataSet2 = unlist(list_data[(i*2)])
+  
+  final_list[[i]] <- lm(DataSet1 ~ DataSet2)
+}
 
 
 #####################################
