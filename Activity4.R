@@ -45,6 +45,10 @@ for (i in 1:3){
 height <- data.frame(Species = c("virginica","setosa","versicolor"),
                      Height.cm = c(60,100,11.8))
 
+irisNew <- iris
+
+irisNew <- full_join(irisNew, height, by ='Species')
+
 
 
 #####################################
@@ -55,10 +59,12 @@ height <- data.frame(Species = c("virginica","setosa","versicolor"),
 plot(iris$Sepal.Length,iris$Sepal.Width)
 
 #3a. now make the same plot in ggplot
-
+NewPlot1 <- ggplot(iris, aes(iris$Sepal.Length, iris$Sepal.Width)) + geom_point()
+NewPlot1
 
 #3b. make a scatter plot with ggplot and get rid of  busy grid lines
-
+NewPlot2 <- NewPlot1 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+NewPlot2
 
 #3c. make a scatter plot with ggplot, remove grid lines, add a title and axis labels, 
 #    show species by color, and make the point size proportional to petal length
