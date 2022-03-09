@@ -68,6 +68,10 @@ NewPlot2
 
 #3c. make a scatter plot with ggplot, remove grid lines, add a title and axis labels, 
 #    show species by color, and make the point size proportional to petal length
+NewPlot3 <- NewPlot1 + theme_classic()
+NewPlot3 <- NewPlot3 + labs(x = "Sepal Length (mm)", y = "Sepal Width (mm)",
+                            title = "Sepal Size based on Length and Width")
+NewPlot3
 
 #####################################
 ##### Question: how did         #####
