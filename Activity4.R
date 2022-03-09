@@ -59,7 +59,7 @@ irisNew <- full_join(irisNew, height, by ='Species')
 plot(iris$Sepal.Length,iris$Sepal.Width)
 
 #3a. now make the same plot in ggplot
-NewPlot1 <- ggplot(iris, aes(iris$Sepal.Length, iris$Sepal.Width)) + geom_point()
+NewPlot1 <- ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point()
 NewPlot1
 
 #3b. make a scatter plot with ggplot and get rid of  busy grid lines
@@ -68,9 +68,13 @@ NewPlot2
 
 #3c. make a scatter plot with ggplot, remove grid lines, add a title and axis labels, 
 #    show species by color, and make the point size proportional to petal length
-NewPlot3 <- NewPlot1 + theme_classic()
-NewPlot3 <- NewPlot3 + labs(x = "Sepal Length (mm)", y = "Sepal Width (mm)",
-                            title = "Sepal Size based on Length and Width")
+NewPlot3 <- ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species, size = Petal.Length)) +
+            geom_point() + 
+            theme_classic() + 
+            scale_color_manual(values = c("setosa" = "purple",
+                              "versicolor"="orange","virginica"="steelblue")) +
+            labs(x = "Sepal Length (mm)", y = "Sepal Width (mm)",
+                title = "Sepal Size based on Length and Width")
 NewPlot3
 
 #####################################
