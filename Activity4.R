@@ -19,19 +19,23 @@ library(ggplot2)
 
 # hint: consider using a list, and also new vectors for regression variables
 
+#Creates an empty list named final_list
 final_list = list()
 
+# Creates a list named flower containing only the data for iris versicolor
 flower <- iris[iris$Species=='versicolor',]
 
+# Creates a list of data to be used in the linear models in the following for loop
 list_data = list(flower$Sepal.Length, flower$Sepal.Width, flower$Petal.Length,
                  flower$Petal.Width, flower$Sepal.Length, flower$Petal.Length)
 
-
 for (i in 1:3){
   
+  # takes the data from list_data two at a time and assigns them to DataSet1 and DataSet2
   DataSet1 = unlist(list_data[((i*2)-1)])
   DataSet2 = unlist(list_data[(i*2)])
   
+  # Uses DataSet1 and DataSet2 and finds the linear model, adds result to final_list
   final_list[[i]] <- lm(DataSet1 ~ DataSet2)
 }
 
@@ -45,9 +49,8 @@ for (i in 1:3){
 height <- data.frame(Species = c("virginica","setosa","versicolor"),
                      Height.cm = c(60,100,11.8))
 
-irisNew <- iris
-
-irisNew <- full_join(irisNew, height, by ='Species')
+# joins iris and height based on species, saves result to irisNew
+irisNew <- full_join(iris, height, by ='Species')
 
 
 
@@ -60,21 +63,26 @@ plot(iris$Sepal.Length,iris$Sepal.Width)
 
 #3a. now make the same plot in ggplot
 NewPlot1 <- ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point()
+# Prints NewPlot1
 NewPlot1
+
 
 #3b. make a scatter plot with ggplot and get rid of  busy grid lines
 NewPlot2 <- NewPlot1 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+# Prints NewPlot2
 NewPlot2
+
 
 #3c. make a scatter plot with ggplot, remove grid lines, add a title and axis labels, 
 #    show species by color, and make the point size proportional to petal length
 NewPlot3 <- ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species, size = Petal.Length)) +
             geom_point() + 
             theme_classic() + 
-            scale_color_manual(values = c("setosa" = "purple",
-                              "versicolor"="orange","virginica"="steelblue")) +
+            scale_color_manual(values = c("setosa" = "red",
+                              "versicolor"="yellow","virginica"="steelblue")) +
             labs(x = "Sepal Length (mm)", y = "Sepal Width (mm)",
                 title = "Sepal Size based on Length and Width")
+# Prints NewPlot3
 NewPlot3
 
 #####################################
