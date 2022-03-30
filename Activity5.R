@@ -1,14 +1,21 @@
 #load in lubridate
 library(lubridate)
 
-#read in streamflow data
-datH <- read.csv("Z:\\data\\streamflow\\stream_flow_data.csv",
+#read in streamflow data (In Class Path)
+#datH <- read.csv("Z:\\data\\streamflow\\stream_flow_data.csv",
+#                 na.strings = c("Eqp"))
+
+#read in streamflow data (Home Path)
+datH <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity5Files\\stream_flow_data.csv",
                  na.strings = c("Eqp"))
 head(datH)
 
-#read in precipitation data
+#read in precipitation data (In class Path)
 #hourly precipitation is in mm
-datP <- read.csv("Z:\\data\\streamflow\\2049867.csv")                            
+#datP <- read.csv("Z:\\data\\streamflow\\2049867.csv")
+
+# read in precipitation data (Home Path)
+datP <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity5Files\\2049867.csv")
 head(datP)
 
 #only use most reliable measurements
@@ -101,6 +108,31 @@ legend("topright", c("mean","1 standard deviation", "2017 Streamflow"), #legend 
        bty="n")#no legend border
 
 #### Question 7 ####
+
+#load dplyr
+library(dplyr)
+
+# Categorize unique date
+datP$uniqueDate <- paste(yday(dateP), year(dateP))
+
+FrameSum <- summarise(group_by(datP, uniqueDate), sum(hour))
+
+colnames(FrameSum) <- c("uniqueDate", "sumHours")
+
+datP <- left_join(datP, FrameSum, by=c("uniqueDate"="uniqueDate"))
+
+datP$fullPrecip <- ifelse(datP$sumHours == sum(c(0:23)), "full", "not full")
+
+datD$uniqueDate <- paste(yday(datesD), year(datesD))
+datD$uniqueDate1 <- as.numeric(paste(year(datesD), yday(datesD), sep = "."))
+
+datDP <- left_join(datD, datP, by="uniqueDate")
+
+plot(datDP$uniqueDate, datDP$discharge, 
+     ylab=expression(paste("Discharge ft"^"3 ","sec"^"-1")),
+     xlab = "Year")
+
+
 
 
 #### QUestion 8 ####
