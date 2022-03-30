@@ -2,20 +2,20 @@
 library(lubridate)
 
 #read in streamflow data (In Class Path)
-#datH <- read.csv("Z:\\data\\streamflow\\stream_flow_data.csv",
-#                 na.strings = c("Eqp"))
+datH <- read.csv("Z:\\data\\streamflow\\stream_flow_data.csv",
+                 na.strings = c("Eqp"))
 
 #read in streamflow data (Home Path)
-datH <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity5Files\\stream_flow_data.csv",
-                 na.strings = c("Eqp"))
+#datH <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity5Files\\stream_flow_data.csv",
+#                na.strings = c("Eqp"))
 head(datH)
 
 #read in precipitation data (In class Path)
 #hourly precipitation is in mm
-#datP <- read.csv("Z:\\data\\streamflow\\2049867.csv")
+datP <- read.csv("Z:\\data\\streamflow\\2049867.csv")
 
 # read in precipitation data (Home Path)
-datP <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity5Files\\2049867.csv")
+#datP <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity5Files\\2049867.csv")
 head(datP)
 
 #only use most reliable measurements
@@ -182,6 +182,37 @@ ggplot(data= datD, aes(yearPlot,discharge)) +
 ggplot(data= datD, aes(yearPlot,discharge)) + 
   geom_violin()
 
+#isolate 2016 and 2017 data into two separate data frames
+only16 <- data.frame(datD$discharge[datD$year==2016], 
+                     datD$doy[datD$year==2016], datD$year[datD$year==2016], 
+                     datD$month[datD$year==2016])
+colnames(only16) <- c("discharge", "doy", "year", "month")
 
+only17 <- data.frame(datD$discharge[datD$year==2017],
+                     datD$doy[datD$year==2017], datD$year[datD$year==2017],
+                     datD$month[datD$year==2017])
+colnames(only17) <- c("discharge", "doy", "year", "month")
 
+#classify seasons using ifelse statements
+only16$season <- ifelse(only16$doy < 32, "Winter",
+                        ifelse(only16$doy < 153, "Spring",
+                               ifelse(only16$doy < 245, "Summer",
+                                      ifelse(only16$doy < 336, "Fall", "Winter"))))
+
+only17$season <- ifelse(only17$doy < 32, "Winter",
+                        ifelse(only17$doy < 153, "Spring",
+                               ifelse(only17$doy < 245, "Summer",
+                                      ifelse(only17$doy < 336, "Fall", "Winter"))))
+
+ggplot(data = only16, aes(x=season, y = discharge, fill = season)) +
+  geom_violin() +
+  xlab("Seasons") +
+  ylab(expression(paste("Discharge ft"^"3 ","sec"^"-1"))) +
+  ggtitle("2016 Stream Discharge by Season")
+
+ggplot(data = only17, aes(x=season, y = discharge, fill = season)) +
+  geom_violin() +
+  xlab("Seasons") +
+  ylab(expression(paste("Discharge ft"^"3 ","sec"^"-1"))) +
+  ggtitle("2017 Stream Discharge by Season")
 
