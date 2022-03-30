@@ -26,6 +26,8 @@ datD <- datH[datH$discharge.flag == "A",]
 datesD <- as.Date(datD$date, "%m/%d/%Y")
 #get day of year
 datD$doy <- yday(datesD)
+#get month of year
+datD$month <- month(datesD)
 #calculate year
 datD$year <- year(datesD)
 #define time
@@ -35,6 +37,8 @@ timesD <- hm(datD$time)
 dateP <- ymd_hm(datP$DATE)
 #get day of year
 datP$doy <- yday(dateP)
+#get month of year
+datP$month <- month(dateP)
 #get year 
 datP$year <- year(dateP)
 
@@ -121,9 +125,11 @@ colnames(FrameSum) <- c("uniqueDate", "sumHours")
 
 datP <- left_join(datP, FrameSum, by=c("uniqueDate"="uniqueDate"))
 
+# categorize datP based on if there is a full day of precipitation data
 datP$fullPrecip <- ifelse(datP$sumHours == sum(c(0:23)), "full", "not full")
 
 datD$uniqueDate <- paste(yday(datesD), year(datesD))
+
 datD$uniqueDate1 <- as.numeric(paste(year(datesD), yday(datesD), sep = "."))
 
 datDP <- left_join(datD, datP, by="uniqueDate")
@@ -135,7 +141,7 @@ plot(datDP$uniqueDate, datDP$discharge,
 
 
 
-#### QUestion 8 ####
+#### Question 8 ####
 #subsest discharge and precipitation within range of interest
 hydroD <- datD[datD$doy >= 248 & datD$doy < 250 & datD$year == 2011,]
 hydroP <- datP[datP$doy >= 248 & datP$doy < 250 & datP$year == 2011,]
@@ -170,6 +176,44 @@ for(i in 1:nrow(hydroP)){
 }
 
 
+#My work
+#subsest discharge and precipitation within range of interest
+hydroD <- datD[datD$doy >= 356 & datD$doy < 358 & datD$year == 2012,]
+hydroP <- datP[datP$doy >= 356 & datP$doy < 358 & datP$year == 2012,]
+
+#get minimum and maximum range of discharge to plot
+#go outside of the range so that it's easy to see high/low values
+#floor rounds down the integer
+yl <- floor(min(hydroD$discharge))-1
+#ceiling rounds up to the integer
+yh <- ceiling(max(hydroD$discharge))+1
+#minimum and maximum range of precipitation to plot
+pl <- 0
+pm <-  ceiling(max(hydroP$HPCP))+.5
+#scale precipitation to fit on the 
+hydroP$pscale <- (((yh-yl)/(pm-pl)) * hydroP$HPCP) + yl
+
+par(mai=c(1,1,1,1))
+#make plot of discharge
+plot(hydroD$decDay,
+     hydroD$discharge, 
+     type="l", 
+     ylim=c(yl,yh), 
+     lwd=2,
+     xlab="Day of year", 
+     ylab=expression(paste("Discharge ft"^"3 ","sec"^"-1")))
+#add bars to indicate precipitation 
+for(i in 1:nrow(hydroP)){
+  polygon(c(hydroP$decDay[i]-0.017,hydroP$decDay[i]-0.017,
+            hydroP$decDay[i]+0.017,hydroP$decDay[i]+0.017),
+          c(yl,hydroP$pscale[i],hydroP$pscale[i],yl),
+          col=rgb(0.392, 0.584, 0.929,.2), border=NA)
+}
+
+
+
+
+
 #### Question 9 ####
 library(ggplot2)
 #specify year as a factor
@@ -182,9 +226,11 @@ ggplot(data= datD, aes(yearPlot,discharge)) +
 ggplot(data= datD, aes(yearPlot,discharge)) + 
   geom_violin()
 
+
+
 #isolate 2016 and 2017 data into two separate data frames
-only16 <- data.frame(datD$discharge[datD$year==2016], 
-                     datD$doy[datD$year==2016], datD$year[datD$year==2016], 
+only16 <- data.frame(datD$discharge[datD$year==2016],
+                     datD$doy[datD$year==2016], datD$year[datD$year==2016],
                      datD$month[datD$year==2016])
 colnames(only16) <- c("discharge", "doy", "year", "month")
 
@@ -203,16 +249,19 @@ only17$season <- ifelse(only17$doy < 32, "Winter",
                         ifelse(only17$doy < 153, "Spring",
                                ifelse(only17$doy < 245, "Summer",
                                       ifelse(only17$doy < 336, "Fall", "Winter"))))
-
+#Make a violin plot of only16
 ggplot(data = only16, aes(x=season, y = discharge, fill = season)) +
   geom_violin() +
   xlab("Seasons") +
   ylab(expression(paste("Discharge ft"^"3 ","sec"^"-1"))) +
-  ggtitle("2016 Stream Discharge by Season")
-
+  ggtitle("2016 Stream Discharge by Season") +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
+  
+#Make a violin plot of only17
 ggplot(data = only17, aes(x=season, y = discharge, fill = season)) +
   geom_violin() +
   xlab("Seasons") +
   ylab(expression(paste("Discharge ft"^"3 ","sec"^"-1"))) +
-  ggtitle("2017 Stream Discharge by Season")
+  ggtitle("2017 Stream Discharge by Season") +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
 
