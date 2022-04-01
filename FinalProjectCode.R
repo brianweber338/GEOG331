@@ -48,35 +48,35 @@ dgSoilMoist$month <- as.numeric(format(dgSoilMoist$dateF,"%m"))
 
 #### Create Summer Data Tables ####
 
-# Stores all Air Temperature data from Oct 1 to April 30
-winterAirTemp <- rbind(subset(dgAirTemp, dgAirTemp$month > "9"), subset(dgAirTemp, dgAirTemp$month < "5"))
+# Stores all Air Temperature data from May 1 to September 30
+SummerAirTemp <- rbind(subset(dgAirTemp, dgAirTemp$month > "4"), subset(dgAirTemp, dgAirTemp$month < "10"))
 # Sorts winterAirTemp based on year and doy
-winterAirTemp <- winterAirTemp %>% arrange(year, doy)
+SummerAirTemp <- SummerAirTemp %>% arrange(year, doy)
 
-# Stores all Relative Humidity data from Oct 1 to April 30
-winterRelativeHumid <- rbind(subset(dgRelativeHumid, dgRelativeHumid$month > "9"), 
-                             subset(dgRelativeHumid, dgRelativeHumid$month < "5"))
+# Stores all Relative Humidity data from May 1 to September 30
+SummerRelativeHumid <- rbind(subset(dgRelativeHumid, dgRelativeHumid$month > "4"), 
+                             subset(dgRelativeHumid, dgRelativeHumid$month < "10"))
 # Sorts winterRelativeHumid based on year and doy
-winterRelativeHumid <- winterRelativeHumid %>% arrange(year, doy)
+SummerRelativeHumid <- SummerRelativeHumid %>% arrange(year, doy)
 
-# Stores all PAR data from Oct 1 to April 30
-winterPAR <- rbind(subset(dgPAR, dgPAR$month > "9"), subset(dgPAR, dgPAR$month < "5"))
+# Stores all PAR data from May 1 to September 30
+SummerPAR <- rbind(subset(dgPAR, dgPAR$month > "4"), subset(dgPAR, dgPAR$month < "10"))
 # Sorts winterPAR based on year and doy
-winterPAR <- winterPAR %>% arrange(year, doy)
+SummerPAR <- SummerPAR %>% arrange(year, doy)
 
-# Stores all Soil Temperature data from Oct 1 to April 30
-winterSoilTemp <- rbind(subset(dgSoilTemp, dgSoilTemp$month > "9"), subset(dgSoilTemp, dgSoilTemp$month < "5"))
+# Stores all Soil Temperature data from May 1 to September 30
+SummerSoilTemp <- rbind(subset(dgSoilTemp, dgSoilTemp$month > "4"), subset(dgSoilTemp, dgSoilTemp$month < "10"))
 # Sorts winterSoilTemp based on year and doy
-winterSoilTemp <- winterSoilTemp %>% arrange(year, doy)
+SummerSoilTemp <- SummerSoilTemp %>% arrange(year, doy)
 
-# Stores all Soil Moisture data from Oct 1 to April 30
-winterSoilMoist <- rbind(subset(dgSoilMoist, dgSoilMoist$month > "9"), subset(dgSoilMoist, dgSoilMoist$month < "5"))
+# Stores all Soil Moisture data from May 1 to September 30
+SummerSoilMoist <- rbind(subset(dgSoilMoist, dgSoilMoist$month > "4"), subset(dgSoilMoist, dgSoilMoist$month < "10"))
 # Sorts winterSoilMoist based on year and doy
-winterSoilMoist <- winterSoilMoist %>% arrange(year, doy)
+SummerSoilMoist <- SummerSoilMoist %>% arrange(year, doy)
 
 #### End Create Summer Data Tables ####
 
 # if the day changes, added summed mean to new data table for that day
-for (i in 1:nrow(winterAirTemp)){
+for (i in 1:nrow(SummerAirTemp)){
   
 }
