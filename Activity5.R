@@ -117,26 +117,32 @@ legend("topright", c("mean","1 standard deviation", "2017 Streamflow"), #legend 
 library(dplyr)
 
 # Categorize unique date
-datP$uniqueDate <- paste(yday(dateP), year(dateP))
+datP$new.date <-  paste(yday(dateP), year(dateP))
+# Sum of hours across each unique date
+full <- summarise(group_by(datP, new.date), sum(hour))
+colnames(full) <- c("id", "HR")
 
-FrameSum <- summarise(group_by(datP, uniqueDate), sum(hour))
-
-colnames(FrameSum) <- c("uniqueDate", "sumHours")
-
-datP <- left_join(datP, FrameSum, by=c("uniqueDate"="uniqueDate"))
+# join the sum of hours back into the data
+datP <- left_join(datP, full, by=c("new.date"="id"))
 
 # categorize datP based on if there is a full day of precipitation data
-datP$fullPrecip <- ifelse(datP$sumHours == sum(c(0:23)), "full", "not full")
+# only days with a measurement every hour should be selected
+datP$fullPrecip <- ifelse(datP$HR == sum(c(0:23)), "full", "not full")
 
-datD$uniqueDate <- paste(yday(datesD), year(datesD))
+# categorize unique date to match unique dates in datP
+datD$new.date <- paste(yday(datesD), year(datesD))
+# categorize unique dates to be used for x-axis
+datD$new.date1 <- as.numeric(paste(year(datesD), yday(datesD), sep = "."))
 
-datD$uniqueDate1 <- as.numeric(paste(year(datesD), yday(datesD), sep = "."))
+# join the two datasets based on new.date
+datD2 <- left_join(datD, datP, by="new.date")
 
-datDP <- left_join(datD, datP, by="uniqueDate")
-
-plot(datDP$uniqueDate, datDP$discharge, 
-     ylab=expression(paste("Discharge ft"^"3 ","sec"^"-1")),
+# plot the discharge, days with full precipitation measures are colored green
+# this code works, it just takes a bit to run
+plot(datD2$new.date1, datD2$discharge, main = "Precipitation Measurements by Day Over All Recorded Years",
+     ylab=expression(paste("Discharge ft"^"3 ","sec"^"-1")), 
      xlab = "Year")
+points(datD2$new.date1[datD2$fullPrecip=="full"], datD2$discharge[datD2$fullPrecip=="full"], col="green")
 
 
 
