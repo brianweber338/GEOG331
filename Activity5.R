@@ -2,20 +2,20 @@
 library(lubridate)
 
 #read in streamflow data (In Class Path)
-datH <- read.csv("Z:\\data\\streamflow\\stream_flow_data.csv",
+#datH <- read.csv("Z:\\data\\streamflow\\stream_flow_data.csv",
                  na.strings = c("Eqp"))
 
 #read in streamflow data (Home Path)
-#datH <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity5Files\\stream_flow_data.csv",
-#                na.strings = c("Eqp"))
+datH <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity5Files\\stream_flow_data.csv",
+                na.strings = c("Eqp"))
 head(datH)
 
 #read in precipitation data (In class Path)
 #hourly precipitation is in mm
-datP <- read.csv("Z:\\data\\streamflow\\2049867.csv")
+#datP <- read.csv("Z:\\data\\streamflow\\2049867.csv")
 
 # read in precipitation data (Home Path)
-#datP <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity5Files\\2049867.csv")
+datP <- read.csv("C:\\Users\\brian\\OneDrive\\Documents\\GEOG331\\Activity5Files\\2049867.csv")
 head(datP)
 
 #only use most reliable measurements
